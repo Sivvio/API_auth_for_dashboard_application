@@ -9,14 +9,15 @@ var jwt = require('jsonwebtoken');
 */
 
 var authenticate = function authenticate(useremail, password, cb) {
-
+    let emailQuery = db.format(process.env.query_check_email, [useremail]);
     //query for email, check if user exists. 
-    db.query('SELECT user_email FROM project_manager.users WHERE user_email = "' + useremail + '"',
+    db.query(process.env.query_check_email,
         function (err, results, fields) {
             if (err) throw err;
             if (results.length > 0) {
+                let passwQuery = db.format(process.env.query_check_password, [password]);
                 //check for password. In the query I specified to search both the email and the password for redudancy
-                db.query('SELECT user_email, user_guid, user_password, user_role FROM project_manager.users WHERE user_password = "' + password + '"AND user_email = "' + useremail + '"',
+                db.query(passwQuery,
                     function (err, results, fields) {
                         if (results.length > 0) {
                             //creates a token 
