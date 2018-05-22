@@ -11,7 +11,7 @@ var jwt = require('jsonwebtoken');
 var authenticate = function authenticate(useremail, password, cb) {
     let emailQuery = db.format(process.env.query_check_email, [useremail]);
     //query for email, check if user exists. 
-    db.query(process.env.query_check_email,
+    db.query(emailQuery,
         function (err, results, fields) {
             if (err) throw err;
             if (results.length > 0) {
